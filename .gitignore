@@ -1,0 +1,8 @@
+node_modules
+out
+.DS_Store
+# 實拍素材檔案過大，不進版控（見 public/footage/README.md）
+public/footage/*.mp4
+public/footage/*.mov
+public/audio/*.wav
+public/audio/*.mp3
