@@ -1,6 +1,6 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, OffthreadVideo, useCurrentFrame, useVideoConfig, Video} from 'remotion';
-import {FOOTAGE, FootageKey, footageSrc, hasStaticAsset} from '../config/footage';
+import {AbsoluteFill, Img, interpolate, OffthreadVideo, staticFile, useCurrentFrame, useVideoConfig, Video} from 'remotion';
+import {FOOTAGE, FootageKey, FootageSpec, footageSource, footageSrc} from '../config/footage';
 import {clamp, EASE} from '../lib/anim';
 import {ProceduralPlate} from './ProceduralPlate';
 
@@ -55,8 +55,8 @@ export const LiveFootage: React.FC<Props> = ({
 }) => {
 	const frame = useCurrentFrame();
 	const {durationInFrames} = useVideoConfig();
-	const spec = FOOTAGE[footage];
-	const usePlate = forcePlate || !hasStaticAsset(spec.file);
+	const spec: FootageSpec = FOOTAGE[footage];
+	const source = forcePlate ? 'plate' : footageSource(footage);
 	const g = GRADES[grade];
 
 	const d = camera?.duration ?? durationInFrames;
@@ -67,15 +67,17 @@ export const LiveFootage: React.FC<Props> = ({
 
 	const maskStyle: React.CSSProperties = mask ? {WebkitMaskImage: mask, maskImage: mask} : {};
 	const videoStyle: React.CSSProperties = {width: '100%', height: '100%', objectFit: 'cover', filter: g.filter};
-	const trimBefore = 'trimBefore' in spec ? (spec as {trimBefore?: number}).trimBefore : undefined;
+	const trimBefore = spec.trimBefore;
 
 	return (
 		<AbsoluteFill style={{overflow: 'hidden', ...maskStyle, ...style}}>
 			<AbsoluteFill style={{transform: `translate(${x}px, ${y}px) scale(${s})`, transformOrigin: '50% 50%'}}>
-				{usePlate ? (
+				{source === 'plate' ? (
 					<AbsoluteFill style={{filter: g.filter}}>
 						<ProceduralPlate kind={spec.plate} />
 					</AbsoluteFill>
+				) : source === 'still' && spec.still ? (
+					<Img src={staticFile(spec.still)} style={videoStyle} />
 				) : engine === 'offthread' ? (
 					<OffthreadVideo src={footageSrc(footage)} muted trimBefore={trimBefore} playbackRate={playbackRate} style={videoStyle} />
 				) : (

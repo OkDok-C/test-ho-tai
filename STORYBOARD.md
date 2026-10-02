@@ -75,7 +75,9 @@
 | `s4_night_boss.mp4` | 2R、4 | 藍調時刻 low-key，學生仰望手機 15s |
 | `audio/bgm_cinematic_60s.mp3` | 全片 | 60 秒配樂，120 BPM，45.2s 留 0.3s 靜音 |
 
-素材缺少時自動使用程序化示意實景板（pre-viz），可先審節奏。實拍到位後需更新的追蹤座標：
+素材來源優先順序：**實拍影片 → 企劃書實景圖 → 程序化示意板**。
+目前場景一已使用企劃書第 2 頁「現場佈置概念圖」（`public/images/booth_main.jpg` 及 6 張局部細節圖），以 Ken Burns 平移／推近取代實拍；
+企劃書其餘頁面為插畫資訊圖，沒有學生日常、操場、夜間校園等實景，場景二至四仍使用示意板，待實拍素材補上。實拍到位後需更新的追蹤座標：
 - `Scene1Campus.tsx` → `boothScreenX`（AR 地標）
 - `Scene3Social.tsx` → `AR_ANCHORS`（AR 精靈位置）
 - `Scene4BossForest.tsx` → `PHONES_PLATE`（光束發射點）
